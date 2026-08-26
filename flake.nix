@@ -1,0 +1,29 @@
+{
+  description = "Home Manager configuration for alberth";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
+  outputs = { nixpkgs, home-manager, ... }:
+    let
+      configs = {
+        darwin = "aarch64-darwin";
+        nixos = "x86_64-linux";
+      };
+    in {
+      homeConfigurations = builtins.mapAttrs (_: system:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+          };
+          modules = [ ./home.nix ];
+        }
+      ) configs;
+    };
+}
