@@ -19,7 +19,6 @@
 
   programs.gpg = {
     enable = true;
-    package = null;
     publicKeys = [
       {
         source = pkgs.fetchurl {
