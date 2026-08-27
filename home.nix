@@ -69,7 +69,6 @@
       pkgs.orion-browser
       pkgs.betterdisplay
       pkgs.syncthing-macos
-      pkgs.tailscale-gui
     ];
 
   programs.zsh.initContent = ''
