@@ -1,6 +1,6 @@
 { ... }: {
   programs.bash.initExtra = ''
-    home-build() {
+    build-home() {
       pushd "$HOME/Projects/nix-home" || return
       case "$(uname -s)" in
         Darwin) home-manager build --flake .#darwin ;;
@@ -9,7 +9,7 @@
       popd
     }
 
-    home-switch() {
+    switch-home() {
       pushd "$HOME/Projects/nix-home" || return
       case "$(uname -s)" in
         Darwin) home-manager switch --flake .#darwin ;;
@@ -18,7 +18,7 @@
       popd
     }
 
-    nix-build() {
+    build-nix() {
       pushd "$HOME/Projects/nix-dendritic" || return
       case "$(uname -s)" in
         Darwin) sudo darwin-rebuild build --flake .#$(hostname) ;;
@@ -27,7 +27,7 @@
       popd
     }
 
-    nix-switch() {
+    switch-nix() {
       pushd "$HOME/Projects/nix-dendritic" || return
       case "$(uname -s)" in
         Darwin) sudo darwin-rebuild switch --flake .#$(hostname) ;;
@@ -38,7 +38,7 @@
   '';
 
   programs.zsh.initContent = ''
-    home-build() {
+    build-home() {
       pushd "$HOME/Projects/nix-home" || return
       case "$(uname -s)" in
         Darwin) home-manager build --flake .#darwin ;;
@@ -47,7 +47,7 @@
       popd
     }
 
-    home-switch() {
+    switch-home() {
       pushd "$HOME/Projects/nix-home" || return
       case "$(uname -s)" in
         Darwin) home-manager switch --flake .#darwin ;;
@@ -56,7 +56,7 @@
       popd
     }
 
-    nix-build() {
+    build-nix() {
       pushd "$HOME/Projects/nix-dendritic" || return
       case "$(uname -s)" in
         Darwin) sudo darwin-rebuild build --flake .#$(hostname) ;;
@@ -65,7 +65,7 @@
       popd
     }
 
-    nix-switch() {
+    switch-nix() {
       pushd "$HOME/Projects/nix-dendritic" || return
       case "$(uname -s)" in
         Darwin) sudo darwin-rebuild switch --flake .#$(hostname) ;;
@@ -75,7 +75,7 @@
     }
   '';
 
-  programs.fish.functions.home-build = ''
+  programs.fish.functions.build-home = ''
     pushd $HOME/Projects/nix-home
     switch (uname -s)
       case Darwin
@@ -86,7 +86,7 @@
     popd
   '';
 
-  programs.fish.functions.home-switch = ''
+  programs.fish.functions.switch-home = ''
     pushd $HOME/Projects/nix-home
     switch (uname -s)
       case Darwin
@@ -97,7 +97,7 @@
     popd
   '';
 
-  programs.fish.functions.nix-build = ''
+  programs.fish.functions.build-nix = ''
     pushd $HOME/Projects/nix-dendritic
     switch (uname -s)
       case Darwin
@@ -108,7 +108,7 @@
     popd
   '';
 
-  programs.fish.functions.nix-switch = ''
+  programs.fish.functions.switch-nix = ''
     pushd $HOME/Projects/nix-dendritic
     switch (uname -s)
       case Darwin
