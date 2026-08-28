@@ -19,7 +19,7 @@
     }
 
     build-nix() {
-      pushd "$HOME/Projects/nix-dendritic" || return
+      pushd "$HOME/Projects/nix-dendrites" || return
       case "$(uname -s)" in
         Darwin) sudo darwin-rebuild build --flake .#$(hostname) ;;
         Linux) sudo nixos-rebuild build --flake .#$(hostname) ;;
@@ -28,7 +28,7 @@
     }
 
     switch-nix() {
-      pushd "$HOME/Projects/nix-dendritic" || return
+      pushd "$HOME/Projects/nix-dendrites" || return
       case "$(uname -s)" in
         Darwin) sudo darwin-rebuild switch --flake .#$(hostname) ;;
         Linux) sudo nixos-rebuild switch --flake .#$(hostname) ;;
@@ -57,7 +57,7 @@
     }
 
     build-nix() {
-      pushd "$HOME/Projects/nix-dendritic" || return
+      pushd "$HOME/Projects/nix-dendrites" || return
       case "$(uname -s)" in
         Darwin) sudo darwin-rebuild build --flake .#$(hostname) ;;
         Linux) sudo nixos-rebuild build --flake .#$(hostname) ;;
@@ -66,7 +66,7 @@
     }
 
     switch-nix() {
-      pushd "$HOME/Projects/nix-dendritic" || return
+      pushd "$HOME/Projects/nix-dendrites" || return
       case "$(uname -s)" in
         Darwin) sudo darwin-rebuild switch --flake .#$(hostname) ;;
         Linux) sudo nixos-rebuild switch --flake .#$(hostname) ;;
@@ -98,7 +98,7 @@
   '';
 
   programs.fish.functions.build-nix = ''
-    pushd $HOME/Projects/nix-dendritic
+    pushd $HOME/Projects/nix-dendrites
     switch (uname -s)
       case Darwin
         darwin-rebuild build --flake .#$(hostname)
@@ -109,7 +109,7 @@
   '';
 
   programs.fish.functions.switch-nix = ''
-    pushd $HOME/Projects/nix-dendritic
+    pushd $HOME/Projects/nix-dendrites
     switch (uname -s)
       case Darwin
         sudo darwin-rebuild switch --flake .#$(hostname)
