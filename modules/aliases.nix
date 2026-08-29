@@ -1,4 +1,19 @@
 { ... }: {
+  programs.bash.shellAliases = {
+    build-darwin = "build-nix";
+    switch-darwin = "switch-nix";
+  };
+
+  programs.zsh.shellAliases = {
+    build-darwin = "build-nix";
+    switch-darwin = "switch-nix";
+  };
+
+  programs.fish.shellAliases = {
+    build-darwin = "build-nix";
+    switch-darwin = "switch-nix";
+  };
+
   programs.bash.initExtra = ''
     build-home() {
       pushd "$HOME/Projects/nix-home" || return
