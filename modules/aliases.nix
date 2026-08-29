@@ -38,10 +38,48 @@
 
     nfu() {
       pushd "$HOME/Projects/nix-dendrites" || return
-      nix flake update && git add flake.lock && git commit -m "Update flake.lock" && git push
+      flake-update-branch
       cd "$HOME/Projects/nix-home" || return
-      nix flake update && git add flake.lock && git commit -m "Update flake.lock" && git push
+      flake-update-branch
       popd
+    }
+
+    flake-update-branch() {
+      local ORIGINAL_BRANCH BRANCH
+      ORIGINAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+      BRANCH=$(date +%Y-%m-%d-%H-%M-%S)
+
+      if ! git checkout -b "$BRANCH"; then
+        echo "Failed to create/checkout branch $BRANCH"
+        return 1
+      fi
+
+      nix flake update
+
+      if ! git diff --quiet -- flake.lock; then
+        git add flake.lock
+        git commit -m "Update flake.lock"
+
+        if ! git checkout main; then
+          echo "Failed to checkout main"
+          return 1
+        fi
+
+        if ! git merge "$BRANCH"; then
+          echo "Merge of $BRANCH into main failed"
+          return 1
+        fi
+
+        git branch -d "$BRANCH"
+        git push origin main
+      else
+        echo "flake.lock unchanged; nothing to commit or merge"
+        git checkout "$ORIGINAL_BRANCH"
+        git branch -d "$BRANCH"
+        return 0
+      fi
+
+      git checkout "$ORIGINAL_BRANCH"
     }
   '';
 
@@ -84,10 +122,48 @@
 
     nfu() {
       pushd "$HOME/Projects/nix-dendrites" || return
-      nix flake update && git add flake.lock && git commit -m "Update flake.lock" && git push
+      flake-update-branch
       cd "$HOME/Projects/nix-home" || return
-      nix flake update && git add flake.lock && git commit -m "Update flake.lock" && git push
+      flake-update-branch
       popd
+    }
+
+    flake-update-branch() {
+      local ORIGINAL_BRANCH BRANCH
+      ORIGINAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+      BRANCH=$(date +%Y-%m-%d-%H-%M-%S)
+
+      if ! git checkout -b "$BRANCH"; then
+        echo "Failed to create/checkout branch $BRANCH"
+        return 1
+      fi
+
+      nix flake update
+
+      if ! git diff --quiet -- flake.lock; then
+        git add flake.lock
+        git commit -m "Update flake.lock"
+
+        if ! git checkout main; then
+          echo "Failed to checkout main"
+          return 1
+        fi
+
+        if ! git merge "$BRANCH"; then
+          echo "Merge of $BRANCH into main failed"
+          return 1
+        fi
+
+        git branch -d "$BRANCH"
+        git push origin main
+      else
+        echo "flake.lock unchanged; nothing to commit or merge"
+        git checkout "$ORIGINAL_BRANCH"
+        git branch -d "$BRANCH"
+        return 0
+      fi
+
+      git checkout "$ORIGINAL_BRANCH"
     }
   '';
 
@@ -137,9 +213,46 @@
 
   programs.fish.functions.nfu = ''
     pushd $HOME/Projects/nix-dendrites
-    nix flake update && git add flake.lock && git commit -m "Update flake.lock" && git push
+    flake-update-branch
     cd $HOME/Projects/nix-home
-    nix flake update && git add flake.lock && git commit -m "Update flake.lock" && git push
+    flake-update-branch
     popd
+  '';
+
+  programs.fish.functions.flake-update-branch = ''
+    set -l ORIGINAL_BRANCH (git rev-parse --abbrev-ref HEAD)
+    set -l BRANCH (date +%Y-%m-%d-%H-%M-%S)
+
+    if not git checkout -b $BRANCH
+        echo "Failed to create/checkout branch $BRANCH"
+        return 1
+    end
+
+    nix flake update
+
+    if not git diff --quiet -- flake.lock
+        git add flake.lock
+        git commit -m "Update flake.lock"
+
+        if not git checkout main
+            echo "Failed to checkout main"
+            return 1
+        end
+
+        if not git merge $BRANCH
+            echo "Merge of $BRANCH into main failed"
+            return 1
+        end
+
+        git branch -d $BRANCH
+        git push origin main
+    else
+        echo "flake.lock unchanged; nothing to commit or merge"
+        git checkout $ORIGINAL_BRANCH
+        git branch -d $BRANCH
+        return 0
+    end
+
+    git checkout $ORIGINAL_BRANCH
   '';
 }
