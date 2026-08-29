@@ -1,15 +1,18 @@
-{ config, ... }: {
+{ config, nix-secrets, ... }:
+let
+  user = import "${nix-secrets}/users/alberth.nix";
+in {
   programs.git = {
     enable = true;
     package = null;
     signing = {
-      key = "5FC8FE1141FA769594E91E48F41BDBF6171A3BB4";
+      key = user.gpgSigningKey;
       signByDefault = true;
     };
     lfs.enable = true;
     settings.user = {
-      name = "Alberth Matos";
-      email = "alberth@matos.cc";
+      name = user.fullName;
+      email = user.email;
       core = {
         editor = "nvim";
         autocrlf = "input";

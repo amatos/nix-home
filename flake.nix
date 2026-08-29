@@ -15,7 +15,7 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs = { nixpkgs, home-manager, nix-secrets, ... }:
     let
       configs = {
         darwin = "aarch64-darwin";
@@ -28,6 +28,7 @@
             inherit system;
             config.allowUnfree = true;
           };
+          extraSpecialArgs = { inherit nix-secrets; };
           modules = [ ./home.nix ];
         }
       ) configs;

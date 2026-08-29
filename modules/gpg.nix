@@ -1,7 +1,8 @@
-{ pkgs, lib,... }:
+{ pkgs, lib, nix-secrets, ... }:
 let
-  gpgSigningKey = "5FC8FE1141FA769594E91E48F41BDBF6171A3BB4";
-  email = "alberth@matos.cc";
+  user = import "${nix-secrets}/users/alberth.nix";
+  gpgSigningKey = user.gpgSigningKey;
+  email = user.email;
 in
 {
   programs.gpg = {
