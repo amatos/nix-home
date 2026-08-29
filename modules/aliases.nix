@@ -35,6 +35,14 @@
       esac
       popd
     }
+
+    nfu() {
+      pushd "$HOME/Projects/nix-dendrites" || return
+      nix flake update && git add flake.lock && git commit -m "Update flake.lock" && git push
+      cd "$HOME/Projects/nix-home" || return
+      nix flake update && git add flake.lock && git commit -m "Update flake.lock" && git push
+      popd
+    }
   '';
 
   programs.zsh.initContent = ''
@@ -71,6 +79,14 @@
         Darwin) sudo darwin-rebuild switch --flake .#$(hostname) ;;
         Linux) sudo nixos-rebuild switch --flake .#$(hostname) ;;
       esac
+      popd
+    }
+
+    nfu() {
+      pushd "$HOME/Projects/nix-dendrites" || return
+      nix flake update && git add flake.lock && git commit -m "Update flake.lock" && git push
+      cd "$HOME/Projects/nix-home" || return
+      nix flake update && git add flake.lock && git commit -m "Update flake.lock" && git push
       popd
     }
   '';
@@ -119,4 +135,11 @@
     popd
   '';
 
+  programs.fish.functions.nfu = ''
+    pushd $HOME/Projects/nix-dendrites
+    nix flake update && git add flake.lock && git commit -m "Update flake.lock" && git push
+    cd $HOME/Projects/nix-home
+    nix flake update && git add flake.lock && git commit -m "Update flake.lock" && git push
+    popd
+  '';
 }
