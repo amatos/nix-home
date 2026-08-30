@@ -2,13 +2,13 @@
 let
   ezaAliases = {
     l = "eza";
-    ll = "eza -l";
-    la = "eza -la";
-    lt = "eza -lT";
-    ltt = "eza -lT --level=2";
-    tree = "eza -T --all --level=3";
-    ls = "eza -abghlUm";
-    big = "eza -lSh";
+    ll = "eza -l --icons";
+    la = "eza -la --icons";
+    lt = "eza -lT --icons";
+    ltt = "eza -lT --level=2 --icons";
+    tree = "eza -T --all --level=3 --icons";
+    ls = "eza -abghlUm --icons";
+    big = "eza -lSh --icons";
   };
 in
 {
