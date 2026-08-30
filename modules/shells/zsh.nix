@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  hmContext ? "nixos",
   ...
 }:
 let
@@ -14,7 +13,7 @@ let
   # and silently uses its pure-zsh fallback (lib/zsh-ls-colors). NixOS and the
   # nix-darwin module keep the fast native module.
   fzfTab =
-    if hmContext == "standalone" && pkgs.stdenv.hostPlatform.isLinux then
+    if pkgs.stdenv.hostPlatform.isLinux then
       pkgs.runCommandLocal "zsh-fzf-tab-no-native-module" { } ''
         cp -r --no-preserve=mode ${pkgs.zsh-fzf-tab} "$out"
         rm -rf "$out/share/fzf-tab/modules"
