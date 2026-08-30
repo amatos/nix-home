@@ -44,11 +44,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1788129468,
-        "narHash": "sha256-KsooFlug+rMmfKdI+GpvnPu6PxP5PVGGzTNZTRF10p4=",
+        "lastModified": 1788130643,
+        "narHash": "sha256-Wzo/jpvymUurwHGNXimpK80KhmtD+qqu7eDCdT9vUa8=",
         "owner": "amatos",
         "repo": "nix-secrets",
-        "rev": "cd691c04d6cfd5b59ec5899f8fe42ef9a1d910de",
+        "rev": "e6c9c55a0c51cf8f3f4ad7f0d2424a94541cf16c",
         "type": "github"
       },
       "original": {
