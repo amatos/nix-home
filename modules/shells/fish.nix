@@ -10,7 +10,7 @@
   # programs.man.package = null (system `man` from nix-darwin is used instead), so
   # cache generation is a no-op and HM emits a warning on every rebuild. Disable it
   # on darwin to keep rebuilds quiet; Linux keeps the cache (package = pkgs.man).
-  programs.man.generateCaches = lib.mkIf pkgs.stdenv.isDarwin false;
+  programs.man.generateCaches = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin false;
 
   programs.fish = {
     enable = true;

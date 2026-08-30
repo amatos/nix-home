@@ -2,12 +2,8 @@
   config,
   lib,
   options,
-  settings,
   ...
 }:
-let
-  hasShell = s: lib.elem s (settings.shells or [ ]);
-in
 {
   # ── fzf ───────────────────────────────────────────────────────────────────
   # programs.fzf handles installation + shell keybindings + completion.
@@ -16,7 +12,7 @@ in
     enable = true;
     enableZshIntegration = true;
     enableBashIntegration = true;
-    enableFishIntegration = hasShell "fish";
+    enableFishIntegration = true;
     # Note: home-manager's programs.fzf has no enableNushellIntegration option
     # at this nixpkgs revision (Bash/Fish/Zsh only). Wire fzf into nu manually
     # in shell/nushell.nix if/when needed — `fzf` binary is still on PATH.
@@ -41,8 +37,7 @@ in
     enable = true;
     enableZshIntegration = true;
     enableBashIntegration = true;
-    enableFishIntegration = hasShell "fish";
-    enableNushellIntegration = hasShell "nushell";
+    enableFishIntegration = true;
   };
 
   # ── zoxide ────────────────────────────────────────────────────────────────
@@ -52,7 +47,6 @@ in
     enable = true;
     enableZshIntegration = true;
     enableBashIntegration = true;
-    enableNushellIntegration = hasShell "nushell";
-    enableFishIntegration = hasShell "fish";
+    enableFishIntegration = true;
   };
 }
