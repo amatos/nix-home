@@ -1,4 +1,9 @@
 {
+  "agent_servers": {
+    "claude-acp": {
+      "type": "registry"
+    }
+  },
   "auto_indent": "syntax_aware",
   "auto_install_extensions": {
     "dockerfile": true,
