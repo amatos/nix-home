@@ -1,6 +1,11 @@
 { ... }:
 let
   commonAliases = {
+    # Safety prompts
+    rm = "rm -i";
+    mv = "mv -i";
+    cp = "cp -i";
+
     # SSH variants
     sshk = "ssh -o StrictHostKeyChecking=no";
     sshv = "ssh -vvv";
