@@ -1,4 +1,28 @@
-{ config, ... }: {
+{
+  config,
+  pkgs,
+  hmContext ? "nixos",
+  ...
+}:
+let
+  # On standalone HM (foreign distro — e.g. Ubuntu, non-NixOS), fzf-tab's
+  # prebuilt native module (fzftab.so) can't be dlopen'd: Nix .so modules don't
+  # pin libc in RPATH, so the dynamic loader resolves libc.so.6 to the host's
+  # system glibc, which mismatches the module's Nix libdl ("GLIBC_ABI_DT_X86_64_PLT
+  # not found") — and changing the login shell to the Nix zsh doesn't help. Strip
+  # the module so fzf-tab's plugin skips the zmodload + interactive rebuild prompt
+  # and silently uses its pure-zsh fallback (lib/zsh-ls-colors). NixOS and the
+  # nix-darwin module keep the fast native module.
+  fzfTab =
+    if hmContext == "standalone" && pkgs.stdenv.hostPlatform.isLinux then
+      pkgs.runCommandLocal "zsh-fzf-tab-no-native-module" { } ''
+        cp -r --no-preserve=mode ${pkgs.zsh-fzf-tab} "$out"
+        rm -rf "$out/share/fzf-tab/modules"
+      ''
+    else
+      pkgs.zsh-fzf-tab;
+in
+{
   programs.zsh = {
     enable = true;
     package = null;
