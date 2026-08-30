@@ -1,18 +1,29 @@
-{ ... }: {
-  programs.bash.shellAliases = {
-    build-darwin = "build-nix";
-    switch-darwin = "switch-nix";
-  };
+{ ... }:
+let
+  commonAliases = {
+    # SSH variants
+    sshk = "ssh -o StrictHostKeyChecking=no";
+    sshv = "ssh -vvv";
+    sshp = "ssh -o PreferredAuthentications=password";
+    ssht = "ssh -o ConnectTimeout=5";
+    sshx = "ssh -X";
+    sshnone = "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no";
 
-  programs.zsh.shellAliases = {
-    build-darwin = "build-nix";
-    switch-darwin = "switch-nix";
-  };
+    # Git history viewers
+    git-log = "git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
+    git-author = "echo '👤 Commit Author History:' && git log --pretty=format:'%h%x09%an%x09%ad%x09%s'";
 
-  programs.fish.shellAliases = {
+    # nix-darwin aliases
     build-darwin = "build-nix";
     switch-darwin = "switch-nix";
   };
+in
+{
+  programs.bash.shellAliases = commonAliases;
+
+  programs.zsh.shellAliases = commonAliases;
+
+  programs.fish.shellAliases = commonAliases;
 
   programs.bash.initExtra = ''
     build-home() {
