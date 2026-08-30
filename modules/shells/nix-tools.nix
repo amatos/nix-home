@@ -34,7 +34,6 @@
     enable = true;
     enableZshIntegration = true;
     enableBashIntegration = true;
-    enableFishIntegration = hasShell "fish";
-    nix-direnv.enable = true;
+    enableFishIntegration = true;
   };
 }
