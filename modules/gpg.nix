@@ -1,4 +1,9 @@
-{ pkgs, lib, nix-secrets, ... }:
+{
+  pkgs,
+  lib,
+  nix-secrets,
+  ...
+}:
 let
   user = import "${nix-secrets}/users/alberth.nix";
   gpgSigningKey = user.gpgSigningKey;
@@ -22,6 +27,26 @@ in
       auto-key-retrieve = true;
       default-key = "${gpgSigningKey}";
       trusted-key = "${gpgSigningKey}";
+    };
+    # GnuPG smartcard glue — make scdaemon defer to pcscd.
+    #
+    # Root cause this fixes: there is exactly one smartcard reader (a built-in
+    # Realtek CCID reader, or a USB YubiKey acting as its own reader). By default
+    # GnuPG's scdaemon uses its *internal* CCID driver and opens that reader
+    # directly via libusb, which locks out pcscd — pcscd then logs
+    # `OpenUSBByName() Can't claim interface … LIBUSB_ERROR_BUSY` and every other
+    # PC/SC consumer (OpenSC PKCS#11, `ssh-add -s`, yubioath) is starved. Whichever
+    # daemon grabs the reader first wins, so the smartcard "works" only
+    # intermittently depending on boot/login race order.
+    #
+    # `disable-ccid` makes scdaemon talk to the reader through pcscd instead of its
+    # own driver (modules/nixos/smartcard already runs pcscd with the ccid plugin),
+    # and `pcsc-shared` lets the card be opened by several PC/SC clients at once.
+    # Net effect: gpg (via scdaemon → pcscd), OpenSC, ssh PKCS#11 and yubioath all
+    # share the single reader instead of fighting over it.
+    scdaemonSettings = {
+      disable-ccid = true; # route through pcscd, don't grab the reader directly
+      pcsc-shared = true; # allow concurrent PC/SC access to the card
     };
     publicKeys = [
       {
